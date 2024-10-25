@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-// Parte 2: Função para carregar itens do Local Storage
+//Função para carregar itens do Local Storage
 const loadFromLocalStorage = () => {
   const trips = [];
   let index = 0;
@@ -32,8 +32,9 @@ function TripForm() {
   const [editIndex, setEditIndex] = useState(null);
   const [error, setError] = useState('');
 
-  // Parte 1: Função para salvar itens no Local Storage
+  //Função para salvar itens no Local Storage
   const saveToLocalStorage = (items) => {
+    localStorage.clear()
     items.forEach((item, index) => {
       localStorage.setItem(
         `trip_${index}`,
@@ -83,7 +84,7 @@ function TripForm() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+    <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center mt-8 w-full">
       <form onSubmit={handleSubmit} className="bg-white p-8 rounded-lg shadow-md w-96">
         <h1 className="text-2xl font-bold mb-4 text-center">Choose Your Destination</h1>
         {error && <p className="text-red-500 mb-4">{error}</p>}
@@ -117,8 +118,8 @@ function TripForm() {
           >
             <option value="">Select an activity</option>
             <option value="Spectacular Turtle Experiences">Spectacular Turtle Experiences</option>
-            <option value="Baia Tour">Baía Tour</option>
-            <option value="Mindel Tour">Mindel Tour</option>
+            <option value="Full day">Full day trip</option>
+            <option value="Half day">Half day trip</option>
             <option value="Hiking">Hiking</option>
           </select>
         </div>
@@ -153,11 +154,11 @@ function TripForm() {
         </button>
       </form>
 
-      <div className="mt-8 w-96">
+      <div className="bg-white p-8 shadow-md w-full mt-8 overflow-x-auto no-scrollbar">
         <h2 className="text-xl font-semibold mb-4">Your Trips</h2>
-        <ul>
-          {items.map((item, index) => (
-            <li key={index} className="bg-gray-200 p-4 rounded-lg mb-2">
+        <ul className='flex space-x-4 p-4 w-full'>
+          {items.length > 0 ? items.map((item, index) => (
+            <li key={index} className="bg-gray-200 p-4 rounded-lg mb-2 w-80 max-w-80 min-w-80 mr-2">
               <p><strong>Destination:</strong> {item.destination}</p>
               <p><strong>Activity:</strong> {item.activity}</p>
               <p><strong>From:</strong> {item.fromDate}</p>
@@ -167,7 +168,7 @@ function TripForm() {
                 <button onClick={() => handleRemove(index)} className="bg-red-500 text-white px-4 py-1 rounded">Remove</button>
               </div>
             </li>
-          ))}
+          )) : (<div className='w-full flex justify-center items-center'><p className='font-bold'>Empty</p></div>)}
         </ul>
       </div>
     </div>
